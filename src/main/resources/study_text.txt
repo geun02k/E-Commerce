@@ -241,3 +241,147 @@
 
 
 
+=============================== << 개발환경셋팅 >> ===============================
+1. window에 Docker 설치여부 확인
+
+	C:\Windows\System32>docker
+
+	Usage:  docker [OPTIONS] COMMAND
+
+	A self-sufficient runtime for containers
+
+	Common Commands:
+	  run         Create and run a new container from an image
+	  exec        Execute a command in a running container
+	  ps          List containers
+	  build       Build an image from a Dockerfile
+	  pull        Download an image from a registry
+	  push        Upload an image to a registry
+	  images      List images
+	  login       Authenticate to a registry
+	  logout      Log out from a registry
+	  search      Search Docker Hub for images
+	  version     Show the Docker version information
+	  info        Display system-wide information
+
+	Management Commands:
+	  ai*         Ask Gordon - Docker Agent
+	  builder     Manage builds
+	  buildx*     Docker Buildx
+	  compose*    Docker Compose
+	  container   Manage containers
+	  context     Manage contexts
+	  debug*      Get a shell into any image or container
+	  desktop*    Docker Desktop commands (Alpha)
+	  dev*        Docker Dev Environments
+	  extension*  Manages Docker extensions
+	  feedback*   Provide feedback, right in your terminal!
+	  image       Manage images
+	  init*       Creates Docker-related starter files for your project
+	  manifest    Manage Docker image manifests and manifest lists
+	  network     Manage networks
+	  plugin      Manage plugins
+	  sbom*       View the packaged-based Software Bill Of Materials (SBOM) for an image
+	  scout*      Docker Scout
+	  system      Manage Docker
+	  trust       Manage trust on Docker images
+	  volume      Manage volumes
+
+	Swarm Commands:
+	  swarm       Manage Swarm
+
+	Commands:
+	  attach      Attach local standard input, output, and error streams to a running container
+	  commit      Create a new image from a container's changes
+	  cp          Copy files/folders between a container and the local filesystem
+	  create      Create a new container
+	  diff        Inspect changes to files or directories on a container's filesystem
+	  events      Get real time events from the server
+	  export      Export a container's filesystem as a tar archive
+	  history     Show the history of an image
+	  import      Import the contents from a tarball to create a filesystem image
+	  inspect     Return low-level information on Docker objects
+	  kill        Kill one or more running containers
+	  load        Load an image from a tar archive or STDIN
+	  logs        Fetch the logs of a container
+	  pause       Pause all processes within one or more containers
+	  port        List port mappings or a specific mapping for the container
+	  rename      Rename a container
+	  restart     Restart one or more containers
+	  rm          Remove one or more containers
+	  rmi         Remove one or more images
+	  save        Save one or more images to a tar archive (streamed to STDOUT by default)
+	  start       Start one or more stopped containers
+	  stats       Display a live stream of container(s) resource usage statistics
+	  stop        Stop one or more running containers
+	  tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
+	  top         Display the running processes of a container
+	  unpause     Unpause all processes within one or more containers
+	  update      Update configuration of one or more containers
+	  wait        Block until one or more containers stop, then print their exit codes
+
+	Global Options:
+		  --config string      Location of client config files (default
+							   "C:\\Users\\glyce\\.docker")
+	  -c, --context string     Name of the context to use to connect to the
+							   daemon (overrides DOCKER_HOST env var and
+							   default context set with "docker context use")
+	  -D, --debug              Enable debug mode
+	  -H, --host list          Daemon socket to connect to
+	  -l, --log-level string   Set the logging level ("debug", "info",
+							   "warn", "error", "fatal") (default "info")
+		  --tls                Use TLS; implied by --tlsverify
+		  --tlscacert string   Trust certs signed only by this CA (default
+							   "C:\\Users\\glyce\\.docker\\ca.pem")
+		  --tlscert string     Path to TLS certificate file (default
+							   "C:\\Users\\glyce\\.docker\\cert.pem")
+		  --tlskey string      Path to TLS key file (default
+							   "C:\\Users\\glyce\\.docker\\key.pem")
+		  --tlsverify          Use TLS and verify the remote
+	  -v, --version            Print version information and quit
+
+	Run 'docker COMMAND --help' for more information on a command.
+
+	For more help on how to use Docker, head to https://docs.docker.com/go/guides/
+
+
+2. 도커에서 이미지 생성 (이미지 컨테이너로 띄우기)
+	- mysql (이미 Dividend 프로젝트 때 mysql 이미지를 받아놓은게 있어서 추가 다운로드 작업없음.
+			 \ window에서 mysql 3306포트 사용중, Dividend 프로젝트에서 포트번호 3307사용중으로 3308 포트번호 사용.)
+		C:\Windows\System32>docker run -it --name zero-base-cms-mysql -e MYSQL_ROOT_PASSWORD=1 -p 3308:3306 -d mysql
+		8be28ca99483021ec4681b2676bcd2e116282abf4a751b71b88e8ed0b462729f
+
+	- Redis
+	  1. Redis GUI툴(Redis Insight) 이용 예정 (redis를 잘 모를 땐 command로 작성하는 것보다 편할 수 있음.)
+	  2. redis 이미지를 받은 적 없기에 명령어 작성 시 추가 다운로드 작업 있음.
+		C:\Windows\System32>docker run -it --name zero-base-cms-redis -p 6379:6379 -d redis
+							Unable to find image 'redis:latest' locally
+							latest: Pulling from library/redis
+							8242f9d5b464: Download complete
+							141f00d6fee8: Download complete
+							8912a88e73c8: Download complete
+							9501a6ec095f: Download complete
+							75dffa679c9b: Download complete
+							98e7597530ef: Download complete
+							4f4fb700ef54: Download complete
+							bc0965b23a04: Download complete
+							Digest: sha256:ea96c435dc17b011f54c6a883c3c45e7726242b075de61c6fe40a10ae6ae0f83
+							Status: Downloaded newer image for redis:latest
+							75fea26ac8f96e1c09338d8e2989e2e13b02755b8dcd13d5aae852ce2578dc4a
+
+
+	- docker ps -a 명령어를 통해 현재 실행중인 컨테이너 목록 확인
+		C:\Windows\System32>docker ps -a
+							CONTAINER ID   IMAGE           COMMAND                   CREATED         STATUS                        PORTS                               NAMES
+							75fea26ac8f9   redis           "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes                  0.0.0.0:6379->6379/tcp              zero-base-cms-redis
+							8be28ca99483   mysql           "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes                  33060/tcp, 0.0.0.0:3308->3306/tcp   zero-base-cms-mysql
+							61cc9cad8ed0   ubuntu:latest   "/bin/bash"               31 hours ago    Exited (255) 35 minutes ago                                       test-ubuntu
+							127c484b15c4   mysql:latest    "docker-entrypoint.s…"   42 hours ago    Exited (255) 31 hours ago     33060/tcp, 0.0.0.0:3307->3306/tcp   mysql-container
+
+
+3. Email Service인 Mailgun 가입
+	- 메일을 통해 인증번호를 발송하고 인증번호를 통해 회원가입을 받는 flow를 가질것이므로 가입필요.
+
+
+
+
