@@ -25,3 +25,18 @@ public class FeignConfig {
 
 
 
+
+============================== << 고객 회원가입 >> ===============================
+1. Customer.java
+   - 고객 정보를 담는 model
+   - 회원가입 시 validation check에 대해 추가적으로 진행필요.
+     ex) 전화번호, 이메일 등 기본적인 유효성검사.
+   - 테스트코드 작성 시 SignUpForm.java 와 같이 Getter()만 존재하면 테스트가 사실상 쉽지는 않다.
+     이런 경우는 필드들을 mocking해서 사용하는 것이 좋다.
+     현재 프로젝트에서는 테스트코드 구현을 위해 단순히 SignUpForm에 builder, constructor 관련 어노테이션들을 사용한다.
+     (추후 mocking으로 수정필요, mocking이 정석적인 방법임.)
+
+
+
+
+
