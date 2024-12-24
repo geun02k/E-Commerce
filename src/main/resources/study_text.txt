@@ -383,5 +383,26 @@
 	- 메일을 통해 인증번호를 발송하고 인증번호를 통해 회원가입을 받는 flow를 가질것이므로 가입필요.
 
 
+4. springboot 프로젝트 생성
+   1. spring.io를 통해 cms 프로젝트 생성
+
+   2. cms 프로젝트 내부에 user-api 모듈을 생성
+      - cms 프로젝트 안에 user-api 모듈을 넣어두긴 했지만 실제로 dependency 자체가 연동되어 있지는 않은 상태이다.
+        해당 프로젝트와 모듈을 연결해주기 위해 settings.gradle 파일에 모듈 의존성을 추가한다.
+        -> include 'user-api'
+      - rootProject명은 내 프로젝트 폴더명이고, 정확히 확인하고 싶으면 cms 프로젝트의 settings.gradle 파일의 rootProject.name 파라미터를 확인하면 된다.
+
+   3. 루트 프로젝트와 모듈 의존성 추가
+      subprojects
+      : 프로젝트 수준의 build.gradle에서 모듈 수준의 build.gradle을 제어해야하는 경우
+        allprojects, subprojects, project 세가지 옵션 사용이 가능하다.
+        그 중 subprojects의 경우 해당 프로젝트에 포함된 모든 모듈의 build.gradle을 제어하기 위한 것이다.
+        즉, 하위의 모든 모듈들에 정의된 플러그인 및 의존성을 적용시키는 역할을 한다.
+
+- 참고 블로그 : https://velog.io/@jthugg/spring-multi-module
+           : https://wildeveloperetrain.tistory.com/251
+
+
+
 
 
