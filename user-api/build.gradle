@@ -16,6 +16,11 @@ java {
 repositories {
     mavenCentral()
 }
+// FeignClients 사용을 위한 추가1
+// openfeign 이 외부 라이브러리이기 때문에 버전명시필요
+ext {
+    set('springCloudVersion', '2021.0.1')
+}
 
 configurations {
     compileOnly {
@@ -23,8 +28,17 @@ configurations {
     }
 }
 
+// FeignClients 사용을 위한 추가2
 dependencies {
+    // 메일 발송을 위한 의존성 추가
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+}
 
+// FeignClients 사용을 위한 추가3
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
 
 tasks.named('test') {

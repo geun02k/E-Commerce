@@ -381,7 +381,7 @@
 
 3. Email Service인 Mailgun 가입
 	- 메일을 통해 인증번호를 발송하고 인증번호를 통해 회원가입을 받는 flow를 가질것이므로 가입필요.
-
+    - mailgun 신용카드 미등록계정 하루 100건 제한.
 
 4. springboot 프로젝트 생성
    1. spring.io를 통해 cms 프로젝트 생성
