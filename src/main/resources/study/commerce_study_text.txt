@@ -26,6 +26,74 @@ public class FeignConfig {
 
 
 
+============================== << embedded H2 DB 파일경로 찾지못해 발생하는 에러해결  >> ===============================
+1. 발생에러
+    ***************************
+    APPLICATION FAILED TO START
+    ***************************
+
+    Description:
+
+    Failed to configure a DataSource: 'url' attribute is not specified and no embedded datasource could be configured.
+
+    Reason: Failed to determine a suitable driver class
+
+
+    Action:
+
+    Consider the following:
+        If you want an embedded database (H2, HSQL or Derby), please put it on the classpath.
+        If you have database settings to be loaded from a particular profile you may need to activate it (no profiles are currently active).
+
+2. 발생원인
+   : h2 DB를 임베디드 형식으로 추가한 경우 H2 DB 파일을 저장할 해당 경로가 존재하지 않아 발생한다고 생각했는데
+     드라이버 미존재가 이유였음. (근데 jdbc 의존성 주입하면 드라이버 자동 다운로드 되는거 아닌가...)
+     그런데 드라이버를 다운로드해도 동일 에러 발생.
+
+     여러 경로로 폴더를 생성해보았다.
+     Users 폴더의 하위는 사용자 계정별 폴더가 존재하다보니
+     현재 window 계정 사용자가 접근할 수 없는 폴더에 접근하려해서 발생한 문제로 파악.
+
+   - in memory 또는 embedded로 H2 DB 추가하는 방법 (H2 DB 관련 study내용 Account project 참고)
+     - 참고 블로그
+        : https://gyucheolk.tistory.com/72
+        : https://congsong.tistory.com/46
+        : https://colabear754.tistory.com/193
+
+3. 해결방법
+   일단 드라이버 미존재의 경우 해결방법.
+    1. c/사용자/developer 파일 생성한 경우
+       application.properties 파일의 spring.datasource.url=jdbc:h2:file:/User/developer/h2Data 라안의 좌측 DB 이미지 클릭 시  Download missing driver files 오류 확인가능.
+    2. 인텔리제이 우측 상단의 알림아이콘 클릭 > 에러 확인 시 Driver class 'org.h2.Driver' not found Driver files are not downloaded 알림의 하단에서 오류 확인가능.
+    위의 두 경우에서 'Download Driver Files'를 이용해 드라이버 다운로드.
+
+    인텔리제이 우측 상단 3번째인 Database 아이콘을 클릭해 Database를 확인.
+    path 경로가 선생님은 spring.datasource.url=jdbc:h2:file:/Users/developer/h2Data
+    여서 따라했는데 해당 경로를 제외하고 User/developer/h2Data (사용자외부폴더), 또는 /Users/glyce/h2Data (현재 사용하고 있는 window 계정) 을 경로로 설정시 정상적으로 파일 생성 및 접근가능.
+    아마 현재 window 계정 사용자가 접근할 수 없는 타 계정 폴더에 접근하려해서 발생한 문제로 파악.
+    연결 경로들을 모두 내 계정 사용자로 변경해 해결.
+    1. 현재 cms 프로젝트 기준 user-api/src/test/resources/application.properties 파일
+      spring.datasource.url=jdbc:h2:file:/Users/glyce/h2Data 로 작성.
+    2. Database Properties Path, URL 경로도 각각 아래의 경로로 변경. (~/ 현재 사용자계정 홈디렉토리)
+       /Users/glyce/h2Data.mv.db
+       jdbc:h2:/Users/glyce/h2Data
+
+    변경해주었더니 다른 에러 발생
+    org.h2.jdbc.jdbcsqlnontransientconnectionexception: a file path that is implicitly relative to the current working directory is not allowed in the database url "jdbc:h2:file:/users/glyce/h2data". use an absolute path, ~/name, ./name, or the basedir setting instead. [90011-200]
+    아마 해당 프로젝트와 관련된 경로는 절대경로로 입력 불가한 것 같아 ../ ./ ~/ 등의 경로를 테스트함.
+    - ~/ 경로를 사용해야하는 이유
+      : ~/ = C/User/glyce/ 로 기존 원했던 가장 적절한 경로임.
+
+    추가적으로
+    Failed to configure a DataSource: 'url' attribute is not specified and no embedded datasource could be configured.
+    에러가 발생한 이유는 테스트 DB만 사용한다고 user-api application.properties에 DB 연결정보는 적어주지 않고
+    SignUpCustomerService에서는 Jpa를 통해 save() 메서드를 호출해서 발생한 것으로 보인다.
+    아마 서비스에서는 저장 시 설정정보를 셋팅해주지않아 테스트 환경셋팅을 불러간 것 같다...
+
+    여러모로 많은 에러가 발생했고 이것저것 수정을 통해 해결하게 됨.
+
+
+
 ============================== << 고객 회원가입 >> ===============================
 1. Customer.java
    - 고객 정보를 담는 model

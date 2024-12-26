@@ -403,6 +403,19 @@
            : https://wildeveloperetrain.tistory.com/251
 
 
+5. DB 연결 (application.properties 참고)
+   - 보통 모듈별 DB를 물리적으로 다른 곳에 둔다.
+     하지만 현재 프로젝트에서는 database만 분리하고 물리적으로는 분리하지 않도록한다.
+     ex) spring.datasource.url=jdbc:mysql://localhost:3306/zeroorder?useSSL=false,useUnicode=true&allowPublicKeyRetrieval=true
 
+   - spring.jpa.hibernate.ddl-auto=create
+     : 개발시에만 create로 적용하고 추후 안정화되면 update로 변경.
+       실제 상용화버전에서는 절대 create 적용하면 안됨.
 
+   - h2DB, mysql 둘다 사용하는 이유
+     : mysql을 테스트 시에도 함께 사용하다보면 데이터가 오염될 수 있다.
+       따라서 테스트를 위해서는 임베디드 DB를 따로 두고 테스트한다.
+       - build.gradle 설정
+         1. h2 DB -> testImplementation 으로 의존성 추가 (테스트 시에만 사용.)
+         2. mysql DB -> implementation 으로 의존성 추가 (서비스운영 시에만 사용.)
 
