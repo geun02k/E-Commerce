@@ -111,7 +111,48 @@ public class FeignConfig {
 
 
 
+============================== << 고객 회원가입 >> ===============================
+1. Customer.java
+   - 고객 정보를 담는 model
+   - 회원가입 시 validation check에 대해 추가적으로 진행필요.
+     ex) 전화번호, 이메일 등 기본적인 유효성검사.
+   - 테스트코드 작성 시 SignUpForm.java 와 같이 Getter()만 존재하면 테스트가 사실상 쉽지는 않다.
+     이런 경우는 필드들을 mocking해서 사용하는 것이 좋다.
+     현재 프로젝트에서는 테스트코드 구현을 위해 단순히 SignUpForm에 builder, constructor 관련 어노테이션들을 사용한다.
+     (추후 mocking으로 수정필요, mocking이 정석적인 방법임.)
 
+
+
+
+
+============================== << 고객 회원가입 테스트 시 발생오류 해결 >> ===============================
+1. 발생오류
+- SignUpCustomerServiceTest 테스트 수행시 자꾸 signUpCustomerService 객체가 null인 오류발생.
+  -> @Autowired를 통해 빈 주입을 안해줌... (하씨...)
+
+
+2. 발생오류
+    - 발생오류
+      : org.h2.jdbc.JdbcSQLNonTransientConnectionException: A file path that is implicitly relative to the current working directory is not allowed in the database URL "jdbc:h2:file:/Users/glyce/h2Data". Use an absolute path, ~/name, ./name, or the baseDir setting instead. [90011-200]
+    - 발생원인
+      : 현재 프로젝트 경로와 DB 경로가 연관이있어서 절대경로로 접근불가한 것 같음.
+    - 해결방법
+      : user-api/src/test/resources/application.properties 파일에서 url 정보를
+      spring.datasource.url=jdbc:h2:file:/Users/glyce/h2Data
+      -> spring.datasource.url=jdbc:h2:file:./Users/glyce/h2Data 으로 변경
+
+
+3. 발생오류
+   - 발생오류
+     :
+   - 발생원인
+     : customerRepository 객체가 null.
+   - 해결방법
+     : SignUpCustomerService 빈 생성 시 CustomerRepository 을 필수 인자로 넣어 생성해야하는데
+       customerRepository 변수를 final로 선언하지 않음....
+       user-api/src/main/java/com/zerobase/cms/user/service/SignUpCustomerService.java 파일의
+       private CustomerRepository customerRepository;
+       -> private final CustomerRepository customerRepository; 으로 변경.
 
 
 
