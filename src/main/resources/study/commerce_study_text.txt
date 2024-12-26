@@ -94,15 +94,23 @@ public class FeignConfig {
 
 
 
-============================== << 고객 회원가입 >> ===============================
-1. Customer.java
-   - 고객 정보를 담는 model
-   - 회원가입 시 validation check에 대해 추가적으로 진행필요.
-     ex) 전화번호, 이메일 등 기본적인 유효성검사.
-   - 테스트코드 작성 시 SignUpForm.java 와 같이 Getter()만 존재하면 테스트가 사실상 쉽지는 않다.
-     이런 경우는 필드들을 mocking해서 사용하는 것이 좋다.
-     현재 프로젝트에서는 테스트코드 구현을 위해 단순히 SignUpForm에 builder, constructor 관련 어노테이션들을 사용한다.
-     (추후 mocking으로 수정필요, mocking이 정석적인 방법임.)
+
+
+============================== << DB연결 설정정보 에러해결 >> ===============================
+1. 발생에러
+   - java.sql.SQLException: Access denied for user 'root'@'localhost' (using password: YES)
+2. 발생원인
+   - 현재 내 컴퓨터는 3306포트를 mysql이 사용하고있다.
+     하지만 해당 프로젝트는 3306 포트의 mysql이 아닌 Docker에 올려놓은 mysql을 사용하고있다.
+     해당 Docker의 mysql은 현재 컴퓨터의 mysql이 사용하고있는 포트와 충돌되지 않도록 mysql 기본 포트가 아닌 3308포트를 사용하도록 설정해주었다.
+     하지만 application.properties에서는 3306포트로 해당 계정과 비밀번호로 접근하게 되어 발생한 오류로 보인다.
+2. 해결방법
+   - application.properties 파일의 datasource.url 경로에서 포트번호를 3306 -> 3308로 변경해 해결.
+
+
+
+
+
 
 
 
