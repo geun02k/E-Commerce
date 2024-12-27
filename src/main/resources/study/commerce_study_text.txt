@@ -138,6 +138,41 @@ public class FeignConfig {
      (추후 mocking으로 수정필요, mocking이 정석적인 방법임.)
 
 
+2. 회원정보, 주문정보 저장을 위한 DB 생성
+  - JPA가 Entity 구조에 맞춰 테이블은 생성해주지만 Database를 생성해주지는 않는다.
+     따라서 mysql 사용시 zeroorder라는 DB 생성필수.
+     - 인텔리제이에서 우측의 DB 아이콘 눌러 zeroorder@localhost 계정 실행해
+       우클릭 > New > Query console > CREATE DATABASE zeroorder; 입력
+
+    - docker에서 mysql에 DB 생성여부 확인하기.
+     C:\Users\glyce>docker exec -it  zero-base-cms-mysql /bin/sh
+     sh-5.1# mysql -u root -p
+     Enter password:
+     Welcome to the MySQL monitor.  Commands end with ; or \g.
+     Your MySQL connection id is 18
+     Server version: 9.1.0 MySQL Community Server - GPL
+
+     Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+
+     Oracle is a registered trademark of Oracle Corporation and/or its
+     affiliates. Other names may be trademarks of their respective
+     owners.
+
+     Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+     mysql> show databases;
+     +--------------------+
+     | Database           |
+     +--------------------+
+     | information_schema |
+     | mysql              |
+     | performance_schema |
+     | sys                |
+     | zeroorder          |
+     +--------------------+
+     5 rows in set (0.19 sec)
+
+
 
 
 
@@ -177,6 +212,28 @@ public class FeignConfig {
        user-api/src/main/java/com/zerobase/cms/user/service/SignUpCustomerService.java 파일의
        private CustomerRepository customerRepository;
        -> private final CustomerRepository customerRepository; 으로 변경.
+
+
+
+
+
+============================== << 이메일 인증 >> ===============================
+1. 설계 시 패키지 분리
+   : 회원가입 시 수행해야하는 일이 2가지이다.
+     1. 회원계정생성
+     2. 인증메일발송
+     이렇게 두 가지의 다른 역할을 하는 경우 복잡도가 높아질 수 있어서 서비스를 한 패키지에 두지 않고 분리하기도 한다.
+
+
+
+
+
+============================== << 이메일 인증 테스트 >> ===============================
+1. SignUpController.java
+   : url 검색창을 통해 해당 컨트롤러의 경로로 verifyCustomer() 메서드 호출 시 화이트 에러 페이지가 나타난다.
+     해당 메서드는 put 메서드로 매핑되어있고 url검색창을 통해 put 요청을 할 수 없기 때문이다.
+     따라서 테스트코드가 아닌 외부에서 api 호출을 통한 테스트를 수행하고싶다면
+      swagger나 postman 같은 툴에서 put 요청을 통해 인증 테스트를 진행할 수있다.
 
 
 
