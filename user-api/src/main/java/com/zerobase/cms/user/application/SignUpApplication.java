@@ -20,6 +20,10 @@ public class SignUpApplication {
     private final MailgunClient mailgunClient;
     private final SignUpCustomerService signUpCustomerService;
 
+    public void customerVerify(String email, String code) {
+        signUpCustomerService.verifyEmail(email, code);
+    }
+
     public String customerSignUp(SignUpForm form) {
         if(signUpCustomerService.isEmailExist(form.getEmail())) {
             throw new CustomException(ALREADY_REGISTER_USER);
@@ -56,7 +60,7 @@ public class SignUpApplication {
         StringBuilder builder = new StringBuilder();
         // 이메일 클릭을 통한 인증
         return builder.append("Helo ").append("! Please Click Link for verification.\n\n")
-                .append("http://localhost:8080/customer/signup/verify?")
+                .append("http://localhost:8081/signup/verify/customer?")
                 .append("email=").append(email)
                 .append("&code=").append(code).toString();
         // 아직 고객에 대한 인증 endpoint(경로?) : customer/signup/verify

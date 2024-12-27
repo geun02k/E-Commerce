@@ -4,10 +4,7 @@ import com.zerobase.cms.user.application.SignUpApplication;
 import com.zerobase.cms.user.domain.SignUpForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 // 구매자 회원가입과 셀러 회원가입이 다르지 않을 것 같아 공통처리(재활용)를 위해
@@ -22,5 +19,13 @@ public class SignUpController {
     @PostMapping
     public ResponseEntity<String> customerSignUp(@RequestBody SignUpForm form) {
         return ResponseEntity.ok(signUpApplication.customerSignUp(form));
+    }
+
+    // id 노출보다는 email 노출이 나을 것 같아 email을 인자로 받음.
+    // 그렇지않고 암호화를 통해 더 안전하게 사용하는 방법도 있음.
+    @PutMapping("/verify/customer")
+    public ResponseEntity<String> verifyCustomer(String email, String code) {
+        signUpApplication.customerVerify(email, code);
+        return ResponseEntity.ok("인증이 완료되었습니다.");
     }
 }
