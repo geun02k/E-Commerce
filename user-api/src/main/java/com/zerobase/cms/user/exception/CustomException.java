@@ -1,8 +1,8 @@
 package com.zerobase.cms.user.exception;
 
-import lombok.Setter;
+import lombok.Getter;
 
-@Setter
+@Getter
 public class CustomException extends RuntimeException {
     private final ErrorCode errorCode;
 
