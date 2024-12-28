@@ -238,3 +238,23 @@ public class FeignConfig {
 
 
 
+
+============================== << zerobase-domain 모듈 생성 및 의존성 추가 오류수정 >> ===============================
+1. user-api에서 zerobase-domain 프로젝트 의존성 추가시 에러발생
+   - 발생에러
+     : A problem occurred evaluating project ':user-api'.
+       > Project with path 'zerobase-domain' could not be found in project ':user-api'.
+   - 발생원인
+     : 모듈을 처음 생성 시 코틀린으로 생성 후 해당 모듈 삭제 후 동일 이름으로 재생성했지만
+       해당 에러 해결되지 않았음.
+   - 해결방법
+     : 아래의 해결방법이 동일하게 도움이 됨.
+
+
+2. 프로젝트 내의 모듈 삭제 후 그래들 빌드시 삭제된 프로젝트에 대해서도 빌드하는 오류발생.
+   - 발생에러
+     : The specified project directory does not exist
+   - 해결방법
+     : 프로젝트 close 후 gradle로 재오픈.
+     - 해결 참고 블로그
+       : https://velog.io/@msuyun1010/The-specified-project-directory-does-not-exist.-%EC%97%90%EB%9F%AC-%ED%95%B4%EA%B2%B0%EB%B0%A9%EB%B2%95

@@ -1,3 +1,5 @@
 rootProject.name = 'cms'
 // 루트프로젝트에 user-api 모듈 의존성추가
 include 'user-api'
+include 'zerobase-domain'
+
