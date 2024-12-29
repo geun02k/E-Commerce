@@ -307,3 +307,26 @@ public class FeignConfig {
             private final JwtAuthenticationProvider provider;
             ...
         }
+
+
+
+
+
+============================== << 셀러 회원가입 및 인증 >> ===============================
+1. SellerEntity에 들어가야할 정보
+   email
+   name
+   password
+   birth
+   phone
+   verificationExpireAt
+   verificationCode
+   Boolean verity
+   Integer balance
+
+2. 권장하는 추가구현기능
+   : Email validation, Thrid party login 연동(카카오, 구글 등)
+
+
+
+
