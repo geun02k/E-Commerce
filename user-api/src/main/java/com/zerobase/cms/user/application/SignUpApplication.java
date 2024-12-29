@@ -39,7 +39,7 @@ public class SignUpApplication {
                     .from("test@dannymytester.com")
                     .to(c.getEmail())
                     .subject("Verification Email!")
-                    .text(getVerificationEmailBody(c.getEmail(), c.getName(), code))
+                    .text(getVerificationEmailBody(c.getEmail(), c.getName(), "customer", code))
                     .build();
             ResponseEntity<String> emailBody = mailgunClient.sendEmail(emailForm);
 
@@ -56,14 +56,14 @@ public class SignUpApplication {
     }
 
     // 인증 이메일 템플릿 생성
-    private String getVerificationEmailBody(String email, String name, String code) {
+    private String getVerificationEmailBody(String email, String name, String type, String code) {
         StringBuilder builder = new StringBuilder();
         // 이메일 클릭을 통한 인증
         return builder.append("Helo ").append("! Please Click Link for verification.\n\n")
-                .append("http://localhost:8081/signup/verify/customer?")
+                .append("http://localhost:8081/signup/" + type + "/verify?")
                 .append("email=").append(email)
                 .append("&code=").append(code).toString();
-        // 아직 고객에 대한 인증 endpoint(경로?) : customer/signup/verify
-    }
+        // 고객에 대한 인증 endpoint(경로) : /signup/verify/customer
+     }
 
 }
