@@ -1,6 +1,6 @@
 package com.zerobase.cms.user.filter;
 
-import com.zerobase.cms.user.service.CustomerService;
+import com.zerobase.cms.user.service.customer.CustomerService;
 import com.zerobase.domain.config.JwtAuthenticationProvider;
 import com.zerobase.domain.domain.common.UserVo;
 import lombok.RequiredArgsConstructor;
