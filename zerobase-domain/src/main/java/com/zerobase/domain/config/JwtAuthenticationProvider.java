@@ -15,6 +15,7 @@ public class JwtAuthenticationProvider {
     private String secretKey = "scretKey";
     private long tokenValidTime = 1000L * 60 * 60 * 24;
 
+    /** 토큰생성 */
     public String createToken(String userPk, Long id, UserType userType) {
         // Aes256Util.encrypt(userPk) : userPk 암호화
         Claims claims = Jwts.claims().setSubject(Aes256Util.encrypt(userPk))
@@ -29,6 +30,7 @@ public class JwtAuthenticationProvider {
                 .compact();
     }
 
+    /** 토큰 유효성 확인 */
     public boolean validateToken(String token) {
         try {
             Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
@@ -39,6 +41,7 @@ public class JwtAuthenticationProvider {
         }
     }
 
+    /** 토큰정보를 통해 id, email 얻기 */
     public UserVo getUserVo(String token) {
         Claims c = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
         // 선생님방식
