@@ -20,4 +20,9 @@ public class SignInController { // 토큰을 발행해 실제로 접근할 수 �
      public ResponseEntity<String> customerSignIn(@RequestBody SignInForm form) {
         return ResponseEntity.ok(signInApplication.customerLoginToken(form));
     }
+
+    @PostMapping("/seller")
+     public ResponseEntity<String> sellerSignIn(@RequestBody SignInForm form) {
+        return ResponseEntity.ok(signInApplication.sellerLoginToken(form));
+    }
 }
