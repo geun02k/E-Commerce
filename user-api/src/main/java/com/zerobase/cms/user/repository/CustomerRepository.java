@@ -8,6 +8,9 @@ import java.util.Optional;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
-    // 일치하는 email 조회
+    // email과 일치하는 회원정보 조회
     Optional<Customer> findByEmail(String email);
+
+    // id, email과 일치하는 회원정보 조회
+    Optional<Customer> findByIdAndEmail(Long id, String email);
 }
