@@ -30,6 +30,9 @@ configurations {
 
 // FeignClients 사용을 위한 추가2
 dependencies {
+    // zerobase-domain 모듈 의존성 추가
+    implementation project(path: ":zerobase-domain", configuration: 'default');
+
     // 메일 발송을 위한 의존성 추가
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
     // BaseEntity에서 지정한 속성 사용을 위해 의존성 추가
